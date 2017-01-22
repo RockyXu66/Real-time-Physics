@@ -132,16 +132,18 @@ int main()
     //Load textures
     floorTexture = loadTexture("wood.png");
     
-    Particle particles[particleNum * particleNum * particleNum * 3];
-    for(int i=0; i<=particleNum * 1.5; i++){
-        for(int j=0; j<=particleNum; j++){
-            for(int k=0; k<=particleNum; k++){
+    //Create a particle
+    Particle particles[particleNum * particleNum * particleNum * 2];
+    for (int i = 0; i <=particleNum; i++){
+        for(int j = 0; j <= particleNum; j++){
+            for(int k = 0; k <= particleNum; k++){
                 Particle& p = particles[((i*particleNum) + j)*particleNum + k];
-                p.mass = 2;
-                p.position = glm::vec3(0.0f - (float(i)/8)+ (rand()%100)/100.0, 3.3f + (rand()%20)/100.0, 0.0f + (float(k)/20.0));
-                p.velocity = glm::vec3(0.5f, 0.0f, 0.0f);
+                p.mass  = 2;
+                p.position = glm::vec3(0.0f + (float(j)/8), 5.0f + (float(i)/8), 0.0f + (float(k)/8));
+                p.velocity = glm::vec3(0.0f, 0.0f, 0.0f);
                 p.force = glm::vec3(0.0f, 0.0f, 0.0f);
             }
+            
         }
     }
     
@@ -174,6 +176,11 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
         
+        cout<< "position:" << particles[0].position.y <<endl;
+        cout<< "velocity:" << particles[0].velocity.y <<endl;
+        cout<< "n : " << n << endl;
+        
+        
         shader.Use();   // <-- Don't forget this one!
         // Transformation matrices
         glm::mat4 projection = glm::perspective(camera.Zoom, (float)screenWidth/(float)screenHeight, 0.1f, 100.0f);
@@ -181,124 +188,47 @@ int main()
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
         
-        for(int i=0; i<=particleNum * 1.5; i++){
-            for(int j=0; j<=particleNum; j++){
-                for(int k=0; k<=particleNum; k++){
+        // Draw the loaded model
+        for (int i = 0; i <=particleNum; i++){
+            for(int j = 0; j <= particleNum; j++){
+                for(int k = 0; k <= particleNum; k++){
                     Particle& p = particles[((i*particleNum) + j)*particleNum + k];
-                    
-                    if(p.position.x < 1.3f){
-                        if(p.position.y <= 3.0f){
-                            n = 150 * abs(float(p.velocity.y)) * (rand()%10/10.0);
-                            glm::vec3 elasticity = glm::vec3(0.0f, n, 0.0f);
-                            p.force.x = gravity.x + elasticity.x;
-                            p.force.y = gravity.y + elasticity.y;
-                            p.force.z = gravity.z + elasticity.z;
-                            a.x = p.force.x / p.mass;
-                            a.y = p.force.y / p.mass;
-                            a.z = p.force.z / p.mass;
-                            p.velocity.x += a.x * deltaTime;
-                            p.velocity.y += a.y * deltaTime;
-                            p.velocity.z += a.z * deltaTime;
-                            p.position.x += p.velocity.x * deltaTime;
-                            p.position.y = 3.0f + p.velocity.y * deltaTime;
-                            p.position.z += p.velocity.z * deltaTime;
-                        }else{
-                            p.force.x = gravity.x;
-                            p.force.y = gravity.y;
-                            p.force.z = gravity.z;
-                            a.x = p.force.x / p.mass;
-                            a.y = p.force.y / p.mass;
-                            a.z = p.force.z / p.mass;
-                            p.velocity.x += a.x * deltaTime;
-                            p.velocity.y += a.y * deltaTime;
-                            p.velocity.z += a.z * deltaTime;
-                            p.position.x += p.velocity.x * deltaTime;
-                            p.position.y += p.velocity.y * deltaTime;
-                            p.position.z += p.velocity.z * deltaTime;
-                        }
-                    }else if(p.position.x > 1.7f && p.position.x < 2.3f){
-                        if(p.position.y <= 2.0f){
-                            n = 150 * abs(float(p.velocity.y)) * (rand()%10/10.0);
-                            glm::vec3 elasticity = glm::vec3(0.0f, n, 0.0f);
-                            p.force.x = gravity.x + elasticity.x;
-                            p.force.y = gravity.y + elasticity.y;
-                            p.force.z = gravity.z + elasticity.z;
-                            a.x = p.force.x / p.mass;
-                            a.y = p.force.y / p.mass;
-                            a.z = p.force.z / p.mass;
-                            p.velocity.x += a.x * deltaTime;
-                            p.velocity.y += a.y * deltaTime;
-                            p.velocity.z += a.z * deltaTime;
-                            p.position.x += p.velocity.x * deltaTime;
-                            p.position.y = 2.0f + p.velocity.y * deltaTime;
-                            p.position.z += p.velocity.z * deltaTime;
-                        }else{
-                            p.force.x = gravity.x;
-                            p.force.y = gravity.y;
-                            p.force.z = gravity.z;
-                            a.x = p.force.x / p.mass;
-                            a.y = p.force.y / p.mass;
-                            a.z = p.force.z / p.mass;
-                            p.velocity.x += a.x * deltaTime;
-                            p.velocity.y += a.y * deltaTime;
-                            p.velocity.z += a.z * deltaTime;
-                            p.position.x += p.velocity.x * deltaTime;
-                            p.position.y += p.velocity.y * deltaTime;
-                            p.position.z += p.velocity.z * deltaTime;
-                        }
-
+                    //Calculate the particles' status
+                    if(p.position.y <= -0.45f){
+                        
+                        n = 150 * abs(float(p.velocity.y));
+                        
+                        glm::vec3 elasticity = glm::vec3(0.0f, n, 0.0f);
+                        
+                        p.force.y = gravity.y + elasticity.y;
+                        
+                        a.y = p.force.y / p.mass;
+                        
+                        p.velocity.y += a.y * (float)deltaTime;
+                        
+                        p.position.y = -0.45f + p.velocity.y * (float)deltaTime;
+                        
                     }else{
-                        if(p.position.y <= -0.45f){
-                            n = 150 * abs(float(p.velocity.y)) * (rand()%10/10.0);
-                            glm::vec3 elasticity = glm::vec3(0.0f, n, 0.0f);
-                            p.force.x = gravity.x + elasticity.x;
-                            p.force.y = gravity.y + elasticity.y;
-                            p.force.z = gravity.z + elasticity.z;
-                            a.x = p.force.x / p.mass;
-                            a.y = p.force.y / p.mass;
-                            a.z = p.force.z / p.mass;
-                            p.velocity.x += a.x * deltaTime;
-                            p.velocity.y += a.y * deltaTime;
-                            p.velocity.z += a.z * deltaTime;
-                            p.position.x += p.velocity.x * deltaTime;
-                            p.position.y = -0.45f + p.velocity.y * deltaTime;
-                            p.position.z += p.velocity.z * deltaTime;
-                        }else{
-                            p.force.x = gravity.x;
-                            p.force.y = gravity.y;
-                            p.force.z = gravity.z;
-                            a.x = p.force.x / p.mass;
-                            a.y = p.force.y / p.mass;
-                            a.z = p.force.z / p.mass;
-                            p.velocity.x += a.x * deltaTime;
-                            p.velocity.y += a.y * deltaTime;
-                            p.velocity.z += a.z * deltaTime;
-                            p.position.x += p.velocity.x * deltaTime;
-                            p.position.y += p.velocity.y * deltaTime;
-                            p.position.z += p.velocity.z * deltaTime;
-                            
-                            //                    cout<< "positionY: "<< p.position.y<<endl;
-                        }
-
-                    }
-            
-                    if(p.position.x > 4.0f){
-                        p.position = glm::vec3(0.0f + (rand()%100)/1000.0, 3.3f+ (rand()%20)/100.0, 0.0f + (float(k)/20.0));
-                        p.velocity = glm::vec3(0.5f + (rand()%100)/1000.0, 0.0f, 0.0f);
+                        p.force.y = gravity.y;
+                        
+                        a.y = p.force.y / p.mass;
+                        
+                        p.velocity.y += a.y * (float)deltaTime;
+                        
+                        p.position.y += p.velocity.y * (float)deltaTime;
                     }
                     
                     glm::mat4 model;
                     model = glm::mat4();
-                    model = glm::translate(model, glm::vec3(p.position.x, p.position.y, p.position.z));
-                    model = glm::scale(model, glm::vec3(0.0001f, 0.0001f, 0.0001f));
-                    glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+                    model = glm::translate(model, glm::vec3(p.position.x, p.position.y , p.position.z));
+                    model = glm::scale(model, glm::vec3(0.0001f, 0.0001f, 0.0001f));	// It's a bit too big for our scene, so scale it down
+                    glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE,  glm::value_ptr(model));
                     particleModel.Draw(shader);
-                    
-                    //            cout<<"deltaTime:" << deltaTime<<endl;
-
                 }
             }
         }
+        
+        cout<<"deltaTime:" << deltaTime<<endl;
         
         //Draw objects
         lightingShader.Use();

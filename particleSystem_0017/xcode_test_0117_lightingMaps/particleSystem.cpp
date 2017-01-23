@@ -50,8 +50,9 @@ GLfloat deltaTime = 0.0f;
 GLfloat lastFrame = 0.0f;
 GLfloat currentTime = 0.0f;
 GLfloat runningTime = 0.0f;
-float n = 0; //The parameter to decide how elastic is the ball
+GLfloat n = 0; //The parameter to decide how elastic is the ball
 const int particleNum = 10; //The number of the particles
+GLint epsilon = 0;
 
 //options
 GLboolean blinn = false;
@@ -187,97 +188,54 @@ int main()
                     Particle& p = particles[((i*particleNum) + j)*particleNum + k];
                     
                     if(p.position.x < 1.3f){
-                        if(p.position.y <= 3.0f){
+                        if(p.position.y <= 3.0f && glm::dot(p.velocity,glm::vec3(0.0f, 1.0f, 0.0f)) < epsilon){
                             n = 150 * abs(float(p.velocity.y)) * (rand()%10/10.0);
                             glm::vec3 elasticity = glm::vec3(0.0f, n, 0.0f);
-                            p.force.x = gravity.x + elasticity.x;
-                            p.force.y = gravity.y + elasticity.y;
-                            p.force.z = gravity.z + elasticity.z;
-                            a.x = p.force.x / p.mass;
-                            a.y = p.force.y / p.mass;
-                            a.z = p.force.z / p.mass;
-                            p.velocity.x += a.x * deltaTime;
-                            p.velocity.y += a.y * deltaTime;
-                            p.velocity.z += a.z * deltaTime;
+                            p.force = gravity + elasticity;
+                            a = p.force / p.mass;
+                            p.velocity += a * deltaTime;
                             p.position.x += p.velocity.x * deltaTime;
                             p.position.y = 3.0f + p.velocity.y * deltaTime;
                             p.position.z += p.velocity.z * deltaTime;
                         }else{
-                            p.force.x = gravity.x;
-                            p.force.y = gravity.y;
-                            p.force.z = gravity.z;
-                            a.x = p.force.x / p.mass;
-                            a.y = p.force.y / p.mass;
-                            a.z = p.force.z / p.mass;
-                            p.velocity.x += a.x * deltaTime;
-                            p.velocity.y += a.y * deltaTime;
-                            p.velocity.z += a.z * deltaTime;
-                            p.position.x += p.velocity.x * deltaTime;
-                            p.position.y += p.velocity.y * deltaTime;
-                            p.position.z += p.velocity.z * deltaTime;
+                            p.force = gravity;
+                            a = p.force / p.mass;
+                            p.velocity += a * deltaTime;
+                            p.position += p.velocity * deltaTime;
                         }
                     }else if(p.position.x > 1.7f && p.position.x < 2.3f){
-                        if(p.position.y <= 2.0f){
+                        if(p.position.y <= 2.0f && p.position.y > 1.7f && glm::dot(p.velocity,glm::vec3(0.0f, 1.0f, 0.0f)) < epsilon){
                             n = 150 * abs(float(p.velocity.y)) * (rand()%10/10.0);
                             glm::vec3 elasticity = glm::vec3(0.0f, n, 0.0f);
-                            p.force.x = gravity.x + elasticity.x;
-                            p.force.y = gravity.y + elasticity.y;
-                            p.force.z = gravity.z + elasticity.z;
-                            a.x = p.force.x / p.mass;
-                            a.y = p.force.y / p.mass;
-                            a.z = p.force.z / p.mass;
-                            p.velocity.x += a.x * deltaTime;
-                            p.velocity.y += a.y * deltaTime;
-                            p.velocity.z += a.z * deltaTime;
+                            p.force = gravity + elasticity;
+                            a = p.force / p.mass;
+                            p.velocity += a * deltaTime;
                             p.position.x += p.velocity.x * deltaTime;
                             p.position.y = 2.0f + p.velocity.y * deltaTime;
                             p.position.z += p.velocity.z * deltaTime;
                         }else{
-                            p.force.x = gravity.x;
-                            p.force.y = gravity.y;
-                            p.force.z = gravity.z;
-                            a.x = p.force.x / p.mass;
-                            a.y = p.force.y / p.mass;
-                            a.z = p.force.z / p.mass;
-                            p.velocity.x += a.x * deltaTime;
-                            p.velocity.y += a.y * deltaTime;
-                            p.velocity.z += a.z * deltaTime;
-                            p.position.x += p.velocity.x * deltaTime;
-                            p.position.y += p.velocity.y * deltaTime;
-                            p.position.z += p.velocity.z * deltaTime;
+                            p.force = gravity;
+                            a = p.force / p.mass;
+                            p.velocity += a * deltaTime;
+                            p.position += p.velocity * deltaTime;
                         }
 
                     }else{
-                        if(p.position.y <= -0.45f){
+                        if(p.position.y <= -0.45f && glm::dot(p.velocity,glm::vec3(0.0f, 1.0f, 0.0f)) < epsilon){
                             n = 150 * abs(float(p.velocity.y)) * (rand()%10/10.0);
                             glm::vec3 elasticity = glm::vec3(0.0f, n, 0.0f);
-                            p.force.x = gravity.x + elasticity.x;
-                            p.force.y = gravity.y + elasticity.y;
-                            p.force.z = gravity.z + elasticity.z;
-                            a.x = p.force.x / p.mass;
-                            a.y = p.force.y / p.mass;
-                            a.z = p.force.z / p.mass;
-                            p.velocity.x += a.x * deltaTime;
-                            p.velocity.y += a.y * deltaTime;
-                            p.velocity.z += a.z * deltaTime;
+                            p.force = gravity + elasticity;
+                            a = p.force / p.mass;
+                            p.velocity += a * deltaTime;
                             p.position.x += p.velocity.x * deltaTime;
                             p.position.y = -0.45f + p.velocity.y * deltaTime;
                             p.position.z += p.velocity.z * deltaTime;
                         }else{
-                            p.force.x = gravity.x;
-                            p.force.y = gravity.y;
-                            p.force.z = gravity.z;
-                            a.x = p.force.x / p.mass;
-                            a.y = p.force.y / p.mass;
-                            a.z = p.force.z / p.mass;
-                            p.velocity.x += a.x * deltaTime;
-                            p.velocity.y += a.y * deltaTime;
-                            p.velocity.z += a.z * deltaTime;
-                            p.position.x += p.velocity.x * deltaTime;
-                            p.position.y += p.velocity.y * deltaTime;
-                            p.position.z += p.velocity.z * deltaTime;
+                            p.force = gravity;
+                            a = p.force / p.mass;
+                            p.velocity += a * deltaTime;
+                            p.position += p.velocity * deltaTime;
                             
-                            //                    cout<< "positionY: "<< p.position.y<<endl;
                         }
 
                     }

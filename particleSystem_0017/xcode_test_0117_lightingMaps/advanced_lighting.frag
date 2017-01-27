@@ -13,7 +13,7 @@ uniform vec3 viewPos;
 uniform bool blinn;
 
 void main()
-{           
+{
     vec3 color = texture(floorTexture, fs_in.TexCoords).rgb;
     // Ambient
     vec3 ambient = 0.05 * color;
@@ -28,7 +28,7 @@ void main()
     float spec = 0.0;
     if(blinn)
     {
-        vec3 halfwayDir = normalize(lightDir + viewDir);  
+        vec3 halfwayDir = normalize(lightDir + viewDir);
         spec = pow(max(dot(normal, halfwayDir), 0.0), 32.0);
     }
     else

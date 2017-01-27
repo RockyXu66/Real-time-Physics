@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B10D33F41E36BFED00306830 /* particleSystem_slopePlane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B10D33F31E36BFED00306830 /* particleSystem_slopePlane.cpp */; };
 		B13E8B8E1E2EB0ED008D7A05 /* libassimp.3.3.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B13E8B8D1E2EB0ED008D7A05 /* libassimp.3.3.1.dylib */; };
 		B13E8B901E2EB13C008D7A05 /* libSOIL.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B13E8B8F1E2EB13C008D7A05 /* libSOIL.dylib */; };
-		B13E8BB01E2ED328008D7A05 /* particleSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B13E8BAF1E2ED328008D7A05 /* particleSystem.cpp */; };
 		B17CC2271E2E9E3F004239F2 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B17CC2261E2E9E3F004239F2 /* OpenGL.framework */; };
 		B17CC2291E2E9E51004239F2 /* libGLEW.2.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B17CC2281E2E9E51004239F2 /* libGLEW.2.0.0.dylib */; };
 		B17CC22B1E2E9E76004239F2 /* libglfw3.3.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B17CC22A1E2E9E76004239F2 /* libglfw3.3.2.dylib */; };
@@ -28,10 +28,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B10D33F31E36BFED00306830 /* particleSystem_slopePlane.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = particleSystem_slopePlane.cpp; sourceTree = "<group>"; };
 		B13E8B8B1E2EB0DC008D7A05 /* 3.3.1 */ = {isa = PBXFileReference; lastKnownFileType = folder; name = 3.3.1; path = ../../../../../../usr/local/Cellar/assimp/3.3.1; sourceTree = "<group>"; };
 		B13E8B8D1E2EB0ED008D7A05 /* libassimp.3.3.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libassimp.3.3.1.dylib; path = ../../../../../../usr/local/Cellar/assimp/3.3.1/lib/libassimp.3.3.1.dylib; sourceTree = "<group>"; };
 		B13E8B8F1E2EB13C008D7A05 /* libSOIL.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libSOIL.dylib; path = ../../../../../../opt/local/lib/libSOIL.dylib; sourceTree = "<group>"; };
-		B13E8BAF1E2ED328008D7A05 /* particleSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = particleSystem.cpp; sourceTree = "<group>"; };
 		B13E8BB11E2ED7E7008D7A05 /* particle.vs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = particle.vs; sourceTree = "<group>"; };
 		B13E8BB21E2ED841008D7A05 /* particle.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = particle.frag; sourceTree = "<group>"; };
 		B17CC2151E2E9DE3004239F2 /* particleSystem_0117 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = particleSystem_0117; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -76,7 +76,7 @@
 		B17CC2171E2E9DE3004239F2 /* particleSystem_0117 */ = {
 			isa = PBXGroup;
 			children = (
-				B13E8BAF1E2ED328008D7A05 /* particleSystem.cpp */,
+				B10D33F31E36BFED00306830 /* particleSystem_slopePlane.cpp */,
 				B13E8BB11E2ED7E7008D7A05 /* particle.vs */,
 				B13E8BB21E2ED841008D7A05 /* particle.frag */,
 			);
@@ -154,7 +154,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B13E8BB01E2ED328008D7A05 /* particleSystem.cpp in Sources */,
+				B10D33F41E36BFED00306830 /* particleSystem_slopePlane.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

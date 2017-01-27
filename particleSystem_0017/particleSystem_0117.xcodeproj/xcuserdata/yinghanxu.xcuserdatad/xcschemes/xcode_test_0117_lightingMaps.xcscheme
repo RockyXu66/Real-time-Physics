@@ -47,7 +47,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Users/yinghanxu/Study/Real-time Rendering/xcode_rendering/particleSystem_0017/xcode_test_0117_lightingMaps"
+      customWorkingDirectory = "/Users/yinghanxu/Study/Real-time Physics/Real-time-Physics-github/particleSystem_0017/xcode_test_0117_lightingMaps"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"

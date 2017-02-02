@@ -93,7 +93,8 @@ GLboolean blinn = false;
 GLuint texture1;
 GLuint texture2;
 
-GLuint VBO, VAO;
+GLuint VBO, VAO, groundVAO;
+GLuint floorTexture;
 
 const int num_vertices = 36;
 glm::vec3 vlist[36];
@@ -229,7 +230,7 @@ int main()
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-    GLFWwindow* window = glfwCreateWindow(screenWidth, screenHeight, "LearnOpenGL", nullptr, nullptr); // Windowed
+    GLFWwindow* window = glfwCreateWindow(screenWidth, screenHeight, "RigidBody", nullptr, nullptr); // Windowed
     glfwMakeContextCurrent(window);
 
     // Set the required callback functions
@@ -253,6 +254,7 @@ int main()
     // Setup and compile our shaders
     Shader ourShader("cube.vs", "cube.frag");
     Shader textShader("text.vs", "text.frag");
+    Shader lightingShader("advanced_lighting.vs", "advanced_lighting.frag");
     
     // FreeType
     FT_Library ft;
@@ -348,7 +350,36 @@ int main()
 
     //Load textures
     texture1 = loadTexture("container.jpg");
-    //texture2 = loadTexture("awesomeface.png");
+    texture2 = loadTexture("awesomeface.png");
+    
+    GLfloat planeVertices[] = {
+        // Positions            // Normals           // Texture Coords
+        25.0f, -0.5f,  25.0f,  0.0f,  1.0f,  0.0f,  25.0f, 0.0f,
+        -25.0f, -0.5f, -25.0f,  0.0f,  1.0f,  0.0f,  0.0f,  25.0f,
+        -25.0f, -0.5f,  25.0f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
+        
+        25.0f, -0.5f,  25.0f,  0.0f,  1.0f,  0.0f,  25.0f, 0.0f,
+        25.0f, -0.5f, -25.0f,  0.0f,  1.0f,  0.0f,  25.0f, 25.0f,
+        -25.0f, -0.5f, -25.0f,  0.0f,  1.0f,  0.0f,  0.0f,  25.0f
+    };
+    
+    //Setup ground VAO
+    GLuint groundVBO;
+    glGenVertexArrays(1, &groundVAO);
+    glGenBuffers(1, &groundVBO);
+    glBindVertexArray(groundVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, groundVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(planeVertices), &planeVertices, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+    glBindVertexArray(0);
+    
+    //Load textures
+    floorTexture = loadTexture("wood.png");
 
     // Game loop
     while(!glfwWindowShouldClose(window))
@@ -399,7 +430,7 @@ int main()
         
         //cout<<"xPos: "<<xpos<<", "<<ypos<<endl;
 
-        //cout<<"omega: ("<<body.omega.x<<", "<<body.omega.y<<", "<<body.omega.z<<")"<<endl;
+//        cout<<"omega: ("<<body.omega.x<<", "<<body.omega.y<<", "<<body.omega.z<<")"<<endl;
         
         glm::mat3 w;
         w = {0, -body.omega.z, body.omega.y,
@@ -422,9 +453,9 @@ int main()
                   Cx.y, Cy.y, Cz.y,
                   Cx.z, Cy.z, Cz.z};
         
-        
+        cout<<"R: "<<body.R[0][0]<<" "<<body.R[0][1]<<" "<<body.R[0][2]<<" "<<body.R[1][0]<<" "<<body.R[1][1]<<" "<<body.R[1][2]<<" "<<body.R[2][0]<<" "<<body.R[2][1]<<" "<<body.R[2][2]<<endl;
 
-        // Update the vertices's position
+        // Update the vertices' position
         GLfloat newVertices[num_vertices*5];
         for(int i=0; i<num_vertices; i++){
             vlist[i].x = vertices[i*5];
@@ -470,6 +501,23 @@ int main()
         
         RenderText(textShader, "This is sample text", 25.0f, 25.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
         RenderText(textShader, "(C) LearnOpenGL.com", 540.0f, 570.0f, 0.5f, glm::vec3(0.3, 0.7f, 0.9f));
+        
+        // Draw the ground
+        lightingShader.Use();
+        model = glm::mat4();
+        view = camera.GetViewMatrix();
+        projection = glm::perspective(camera.Zoom, (float)screenWidth/(float)screenHeight, 0.1f, 100.0f);
+        // std::cout<<glm::to_string(model)<<std::endl;
+        model = glm::translate(model, glm::vec3(0.0f, -3.0f, 0.0f));
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+        // Floor
+        glBindVertexArray(groundVAO);
+        glBindTexture(GL_TEXTURE_2D, floorTexture);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glBindVertexArray(0);
+
 
         // Swap the buffers
         glfwSwapBuffers(window);
@@ -584,6 +632,7 @@ void Do_Movement()
     }
     if(keys[GLFW_KEY_P]){
         body.omega = glm::vec3(0.0f, 0.0f, 0.0f);
+        body.v = glm::vec3(0.0f, 0.0f, 0.0f);
     }
     
 }

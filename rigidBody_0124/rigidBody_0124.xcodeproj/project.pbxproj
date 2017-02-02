@@ -38,6 +38,8 @@
 		B13E8B8B1E2EB0DC008D7A05 /* 3.3.1 */ = {isa = PBXFileReference; lastKnownFileType = folder; name = 3.3.1; path = ../../../../../../usr/local/Cellar/assimp/3.3.1; sourceTree = "<group>"; };
 		B13E8B8D1E2EB0ED008D7A05 /* libassimp.3.3.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libassimp.3.3.1.dylib; path = ../../../../../../usr/local/Cellar/assimp/3.3.1/lib/libassimp.3.3.1.dylib; sourceTree = "<group>"; };
 		B13E8B8F1E2EB13C008D7A05 /* libSOIL.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libSOIL.dylib; path = ../../../../../../opt/local/lib/libSOIL.dylib; sourceTree = "<group>"; };
+		B15A641B1E43ADA1003E4A83 /* advanced_lighting.vs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = advanced_lighting.vs; sourceTree = "<group>"; };
+		B15A641C1E43ADBB003E4A83 /* advanced_lighting.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = advanced_lighting.frag; sourceTree = "<group>"; };
 		B17CC2151E2E9DE3004239F2 /* rigidBody_0124 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = rigidBody_0124; sourceTree = BUILT_PRODUCTS_DIR; };
 		B17CC2261E2E9E3F004239F2 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		B17CC2281E2E9E51004239F2 /* libGLEW.2.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.2.0.0.dylib; path = ../../../../../../usr/local/Cellar/glew/2.0.0/lib/libGLEW.2.0.0.dylib; sourceTree = "<group>"; };
@@ -89,6 +91,8 @@
 				B135D5761E396ADA005220DB /* text.vs */,
 				B135D5771E396AF4005220DB /* text.frag */,
 				B135D5781E396F2B005220DB /* text_rendering.cpp */,
+				B15A641B1E43ADA1003E4A83 /* advanced_lighting.vs */,
+				B15A641C1E43ADBB003E4A83 /* advanced_lighting.frag */,
 			);
 			name = rigidBody_0124;
 			path = xcode_test_0117_lightingMaps;
